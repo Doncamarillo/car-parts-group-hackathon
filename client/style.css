@@ -24,3 +24,56 @@ header {
     color: white;
     cursor: pointer;
 }
+
+
+.brands button:hover {
+    background-color: #555;
+}
+
+.section-1 {
+    background-color: #f9f9f9;
+    padding: 40px 20px;
+}
+
+.search-bar {
+    padding: 10px;
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.brand-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.brand-box {
+    background-color: #ddd;
+    padding: 40px;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+}
+
+footer input {
+    padding: 10px;
+    width: 300px;
+}
+
+footer button {
+    padding: 10px 20px;
+    background-color: tan;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
