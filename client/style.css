@@ -1,0 +1,26 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+
+}
+
+header, section, footer {
+    padding: 20px;
+    text-align: center;
+}
+
+header {
+    background-color: grey;
+    color: black;
+
+}
+
+.brands button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: tan;
+    color: white;
+    cursor: pointer;
+}
