@@ -7,7 +7,7 @@ const {
     createPart,
     deletePart,
     updatePart
-} = require('../controllers/partController');
+} = require('../controllers/partsController');
 
 const router = express.Router();
 

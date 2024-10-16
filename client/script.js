@@ -1,6 +1,6 @@
 const image = document.querySelectorAll(parts)
 const getParts = async (parts) => {
-    const response = await axios.get(``)
+    const response = await axios.get(`http://localhost:3001/api`)
     const partData = response.data;
     console.log ('Parts DataBase', partData)
 }

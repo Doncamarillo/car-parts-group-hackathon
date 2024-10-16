@@ -1,6 +1,8 @@
 const express = require('express');
 const brandRoutes = require('./routes/brandRoutes');
-const partRoutes = require('./routes/partRoutes');
+const partRoutes = require('./routes/partsRoutes');
+const bodyParser = require('body-parser')
+const logger = require(`morgan`)
 
 const app = express();
 app.use(express.json());
@@ -8,6 +10,10 @@ app.use(express.json());
 // Use routes
 app.use('/api/brands', brandRoutes);
 app.use('/api/parts', partRoutes);
+
+app.use(logger('dev'))
+app.use(bodyParser.json())
+
 app.get(`/`, (req, res) => {
     res.send("You have set up your server.js")
 })
