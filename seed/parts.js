@@ -5,23 +5,23 @@ const Part = require('../models/part')
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 const main = async () => {
-    // const Brands = [
-    //     {
-    //         name: 'bosch',
-    //         yearFounded: 1886,
-    //         region: 'Gerlingen, Baden-Württemberg, Germany'
-    //     }
-    //     {
-    //         name: 'Dayco',
-    //         yearFounded: 1905,
-    //         region: 'Birmingham, Michigan, United States'
-    //     },
-    //     {
-    //         name: 'Holley',
-    //         yearFounded: 1896,
-    //         region: 'Bowling Green, Kentucky, United States'
-    //     },
-    // ]
+    const Brands = [
+        {
+            name: 'bosch',
+            yearFounded: 1886,
+            region: 'Gerlingen, Baden-Württemberg, Germany'
+        },
+        {
+            name: 'Dayco',
+            yearFounded: 1905,
+            region: 'Birmingham, Michigan, United States'
+        },
+        {
+            name: 'Holley',
+            yearFounded: 1896,
+            region: 'Bowling Green, Kentucky, United States'
+        },
+    ]
     const bosch = await Brand.find({ name: 'bosch' })
     const dayco = await Brand.find({ name: 'Dayco' })
     const holley = await Brand.find({name: "Holley"})
@@ -82,7 +82,7 @@ const main = async () => {
             price: 800
         },
     ]
-    //await Brand.insertMany(Brands)
+    // await Brand.insertMany(Brands)
     await Part.insertMany(Parts)
     console.log("Created brands with car parts")
 }

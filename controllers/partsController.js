@@ -1,59 +1,79 @@
 // controllers/partsController.js
 
-const parts = []; // In-memory data storage for demo purposes
+const Part = require('../models/part.js'); 
 
-// Get all parts
-const getParts = (req, res) => {
-    res.status(200).json(parts);
-};
+
+
+const getAllParts = async (req, res) => {
+    try {
+        const part = await Part.find()
+        console.log(part)
+        res.json(part)
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+}
+
+
 
 // Get part by ID
-const getPartById = (req, res) => {
-    const { id } = req.params;
-    const part = parts.find(p => p.id === parseInt(id));
-    if (part) {
-        res.status(200).json(part);
-    } else {
-        res.status(404).json({ message: "Part not found" });
+const getPartById = async (req, res) => {
+    try {
+        const { id } = req.params
+        const part = await Part.findById(id)
+        if (part) {
+            return res.json(part)
+        }
+        return res.status(404).send(`that part doesn't exist`)
+    } catch (error) {
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+            return res.status(404).send(`That part doesn't exist`)
+        }
+        return res.status(500).send(error.message);
     }
-};
+}
 
-// Create a new part
-const createPart = (req, res) => {
-    const newPart = {
-        id: parts.length + 1,
-        ...req.body
-    };
-    parts.push(newPart);
-    res.status(201).json(newPart);
-};
-
-// Delete a part
-const deletePart = (req, res) => {
-    const { id } = req.params;
-    const index = parts.findIndex(p => p.id === parseInt(id));
-    if (index !== -1) {
-        parts.splice(index, 1);
-        res.status(200).json({ message: "Part deleted successfully" });
-    } else {
-        res.status(404).json({ message: "Part not found" });
+const createPart = async (req, res) => {
+    try {
+        const part = await new Part(req.body)
+        await part.save()
+        return res.status(201).json({
+            part,
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
     }
-};
+}
 
-// Update a part
-const updatePart = (req, res) => {
-    const { id } = req.params;
-    const index = parts.findIndex(p => p.id === parseInt(id));
-    if (index !== -1) {
-        parts[index] = { id: parseInt(id), ...req.body };
-        res.status(200).json(parts[index]);
-    } else {
-        res.status(404).json({ message: "Part not found" });
+
+const deletePart = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleted = await Part.findByIdAndDelete(id)
+        if (deleted) {
+            return res.status(200).send("Part deleted");
+        }
+        throw new Error("Part not found");
+    } catch (error) {
+        return res.status(500).send(error.message);
     }
-};
+}
+
+const updatePart = async (req, res) => {
+    try {
+        let { id } = req.params;
+        let part = await Part.findByIdAndUpdate(id, req.body, { new: true })
+        if (part) {
+            return res.status(200).json(part)
+        }
+        throw new Error("Part not found")
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+}
 
 module.exports = {
-    getParts,
+    getAllParts,
     getPartById,
     createPart,
     deletePart,
