@@ -1,15 +1,19 @@
 const express = require('express');
-const engineRoutes = require('./routes/engineRoutes');
-const tireRoutes = require('./routes/tireRoutes');
+const brandRoutes = require('./routes/brandRoutes');
+const partRoutes = require('./routes/partRoutes');
 
 const app = express();
 app.use(express.json());
 
 // Use routes
-app.use('/api/engines', engineRoutes);
-app.use('/api/tires', tireRoutes);
+app.use('/api/brands', brandRoutes);
+app.use('/api/parts', partRoutes);
+app.get(`/`, (req, res) => {
+    res.send("You have set up your server.js")
+})
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
