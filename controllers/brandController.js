@@ -1,11 +1,17 @@
-const brands = []; // In-memory data storage for demo purposes
+const brands = require('../models/brand.js'); ; // In-memory data storage for demo purposes
 
 // Get all brands
-const getBrands = (req, res) => {
-    res.status(200).json(brands);
-};
+const getBrands = async (req, res) => {
+    try {
+        const brand = await brands.find()
+        console.log(brand)
+        res.json(brand)
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+}
 
-const getBrandById = (req, res) => {
+const getBrandById = async (req, res) => {
     const { id } = req.params;
 
     const brand = brands.find(b => b.id === parseInt(id));
@@ -17,7 +23,7 @@ const getBrandById = (req, res) => {
 };
 
 // Create a new brand
-const createBrand = (req, res) => {
+const createBrand = async (req, res) => {
     const newBrand = {
         id: brands.length + 1,
         ...req.body
@@ -27,7 +33,7 @@ const createBrand = (req, res) => {
 };
 
 // Delete a brand
-const deleteBrand = (req, res) => {
+const deleteBrand = async (req, res) => {
     const { id } = req.params;
     const index = brands.findIndex(b => b.id === parseInt(id));
     if (index !== -1) {
@@ -39,7 +45,7 @@ const deleteBrand = (req, res) => {
 };
 
 // Update a brand
-const updateBrand = (req, res) => {
+const updateBrand = async (req, res) => {
     const { id } = req.params;
     const index = brands.findIndex(b => b.id === parseInt(id));
     if (index !== -1) {
