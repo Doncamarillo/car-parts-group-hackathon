@@ -3,6 +3,7 @@ const brandRoutes = require('./routes/brandRoutes');
 const partRoutes = require('./routes/partsRoutes');
 const bodyParser = require('body-parser')
 const logger = require(`morgan`)
+const db = require('./db')
 
 
 const app = express();
