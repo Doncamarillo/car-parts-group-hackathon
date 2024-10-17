@@ -2,7 +2,7 @@
 
 const express = require('express');
 const {
-    getBrands,
+    getAllBrands,
     getBrandById,
     createBrand,
     deleteBrand,
@@ -11,7 +11,7 @@ const {
 
 const router = express.Router();
 
-router.get('/', getBrands); // Get all brands
+router.get('/', getAllBrands); // Get all brands
 router.get('/:id', getBrandById); // Get brand by ID
 router.post('/', createBrand); // Create a new brand
 router.put('/:id', updateBrand); // Update a brand
