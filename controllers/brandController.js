@@ -1,63 +1,72 @@
-const brands = require('../models/brand.js'); ; // In-memory data storage for demo purposes
+const Brand = require('../models/brand.js'); 
 
-// Get all brands
-const getBrands = async (req, res) => {
+const getAllBrands = async (req, res) => {
     try {
-        const brand = await brands.find()
-        console.log(brand)
-        res.json(brand)
+        const brand = await Brand.find();
+        console.log(brand);
+        res.json(brand);
     } catch (error) {
         return res.status(500).send(error.message);
     }
 }
 
+// Get brand by ID
 const getBrandById = async (req, res) => {
-    const { id } = req.params;
-
-    const brand = brands.find(b => b.id === parseInt(id));
-    if (brand) {
-        res.status(200).json(brand);
-    } else {
-        res.status(404).json({ message: "Brand not found" });
+    try {
+        const { id } = req.params;
+        const brand = await Brand.findById(id);
+        if (brand) {
+            return res.json(brand);
+        }
+        return res.status(404).send(`That brand doesn't exist`);
+    } catch (error) {
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+            return res.status(404).send(`That brand doesn't exist`);
+        }
+        return res.status(500).send(error.message);
     }
-};
+}
 
-// Create a new brand
 const createBrand = async (req, res) => {
-    const newBrand = {
-        id: brands.length + 1,
-        ...req.body
-    };
-    brands.push(newBrand);
-    res.status(201).json(newBrand);
-};
+    try {
+        const brand = await new Brand(req.body);
+        await brand.save();
+        return res.status(201).json({
+            brand,
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
 
-// Delete a brand
 const deleteBrand = async (req, res) => {
-    const { id } = req.params;
-    const index = brands.findIndex(b => b.id === parseInt(id));
-    if (index !== -1) {
-        brands.splice(index, 1);
-        res.status(200).json({ message: "Brand terminated successfully" });
-    } else {
-        res.status(404).json({ message: "Brand missing in action" });
+    try {
+        const { id } = req.params;
+        const deleted = await Brand.findByIdAndDelete(id);
+        if (deleted) {
+            return res.status(200).send("Brand deleted");
+        }
+        throw new Error("Brand not found");
+    } catch (error) {
+        return res.status(500).send(error.message);
     }
-};
+}
 
-// Update a brand
 const updateBrand = async (req, res) => {
-    const { id } = req.params;
-    const index = brands.findIndex(b => b.id === parseInt(id));
-    if (index !== -1) {
-        brands[index] = { id: parseInt(id), ...req.body };
-        res.status(200).json(brands[index]);
-    } else {
-        res.status(404).json({ message: "Brand not found" });
+    try {
+        let { id } = req.params;
+        let brand = await Brand.findByIdAndUpdate(id, req.body, { new: true });
+        if (brand) {
+            return res.status(200).json(brand);
+        }
+        throw new Error("Brand not found");
+    } catch (error) {
+        return res.status(500).send(error.message);
     }
-};
+}
 
 module.exports = {
-    getBrands,
+    getAllBrands,
     getBrandById,
     createBrand,
     deleteBrand,
